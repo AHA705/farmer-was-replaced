@@ -4,3 +4,6 @@ output.txt
 *.log
 steam_autocloud.vdf
 Backup
+
+## Ignore save
+save.json
