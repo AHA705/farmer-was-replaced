@@ -40,7 +40,7 @@ def main():
     max_d = max_drones() - 1
     for i in range(max_d):
         hat = u_hats[i % len(u_hats)]
-        spawn_drone(task, i, hat)
+        spawn_drone(task, i, hat) # pyright: ignore[reportArgumentType]
     task(max_d, u_hats.pop())
 
 
