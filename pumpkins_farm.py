@@ -1,4 +1,4 @@
-import entire_farmland
+import utils
 def farm():
 	if get_entity_type() != None:
 		for i in range(get_world_size()):
