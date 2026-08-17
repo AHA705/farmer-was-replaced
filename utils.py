@@ -1,5 +1,18 @@
 # Common functions
 
+item_entity = {
+Items.Hay:Entities.Grass,
+Items.Wood:Entities.Tree,
+Items.Carrot:Entities.Carrot,
+Items.Pumpkin:Entities.Pumpkin,
+}
+
+entity_item = {
+Entities.Pumpkin:Items.Pumpkin,
+Entities.Carrot:Items.Carrot,
+Entities.Tree:Items.Wood,
+Entities.Grass:Items.Hay,
+}
 
 def move_n_dir(n, dir):
     for i in range(n):
