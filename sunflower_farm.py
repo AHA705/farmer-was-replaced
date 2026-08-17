@@ -1,8 +1,14 @@
+# Farms sunflowers for power
+
 import utils
 
-locations:list = []
-for _ in range(9):
-	locations.append([])
+def sunflower_task():
+	utils.till_for(Grounds.Soil)
+	utils.water_tile()
+	plant(Entities.Sunflower)
+	# use_item(Items.Fertilizer)
+	return (measure(), (get_pos_x(), get_pos_y()))
+
 
 def harvest_loc(
 	x:int,
@@ -26,9 +32,11 @@ def harvest_loc(
 	harvest()
 
 def harvest_sunflowers(locations:list):
-	drone_i = None
 	drone_i_l = []
+	# Loc is a list of lists sorted by measurement.
+	# Each nested list is a tuple (x,y).
 	for loc in locations:
+		# Need to wait for each measurement to be fully harvested.
 		for d in drone_i_l:
 			wait_for(d)
 		drone_i_l = []
@@ -49,30 +57,44 @@ def harvest_sunflowers(locations:list):
 				continue
 			harvest_loc(x,x_dir,y,y_dir)
 
-def measure_sunflowers():
-	loc:list = locations
-	for _ in range(get_world_size()):
-		for _ in range(get_world_size()):
-			loc[15-measure()].append((get_pos_x(), get_pos_y()))
-			move(North)
-		move(East)
-	return loc
+# For all drones, do f
+def for_all(f):
+	drones_l = []
+	measurements = []
+	def row():
+		a = []
+		for _ in range(get_world_size() - 1):
+			a.append(f())
+			move(East)
+		a.append(f())
+		return a
 
-def plant_sunflowers():
-	loc:list = locations
 	for _ in range(get_world_size()):
-		for _ in range(get_world_size()):
-			spawn_drone(plant_measure)
-			move(North)
-		move(East)
-	return loc
+		d = spawn_drone(row)
+		if not d:
+			measurements += row()
+		else:
+			drones_l.append(d)
+		move(North)
+
+	for d in drones_l:
+		measurements += wait_for(d) # type: ignore
+	return measurements
+
+def sort_harvest(m: list[tuple[int,int,int]]):
+
+	s_loc:list = []
+	for _ in range(9):
+		s_loc.append([])
+
+	for i in m:
+		s_loc[15-i[0]].append(i[1])
+	return s_loc
 
 if __name__ == "__main__":
-	#clear()
+	# clear()
 	# utils.for_all(till)
 	utils.move_to_start()
-	utils.water()
-	utils.for_all_args(plant, Entities.Sunflower)
-	utils.move_to_start()
-	loc = measure_sunflowers()
-	harvest_sunflowers(loc)
+	measurements = for_all(sunflower_task)
+	sorted_locs = sort_harvest(measurements)
+	harvest_sunflowers(sorted_locs)
