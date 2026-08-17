@@ -1,4 +1,3 @@
-import entire_farmland
 import utils
 
 locations:list = []
@@ -16,7 +15,11 @@ def harvest_loc(
 	for _ in range(y):
 		move(y_dir)
 
-	while can_harvest() == False or get_entity_type() != None:
+	if get_entity_type() == None:
+		quick_print("Error: Empty Tile found: (", get_pos_x(),get_pos_y(), ")")
+		return
+
+	while can_harvest() == False:
 		pass
 	# quick_print(get_pos_x(),get_pos_y())
 	# quick_print(measure())
