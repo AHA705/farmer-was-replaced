@@ -53,3 +53,8 @@ def water():
     if get_water() > 0.25:
         return
     for_all(water_tile)
+
+
+def till_for(g: Ground):
+    if get_ground_type() != g:
+        till()
