@@ -91,10 +91,13 @@ def sort_harvest(m: list[tuple[int,int,int]]):
 		s_loc[15-i[0]].append(i[1])
 	return s_loc
 
-if __name__ == "__main__":
+def main():
 	# clear()
 	# utils.for_all(till)
 	utils.move_to_start()
 	measurements = for_all(sunflower_task)
 	sorted_locs = sort_harvest(measurements)
 	harvest_sunflowers(sorted_locs)
+
+if __name__ == "__main__":
+	main()
